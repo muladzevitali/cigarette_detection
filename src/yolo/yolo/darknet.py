@@ -311,7 +311,7 @@ class Darknet(nn.Module):
         # Open the weights file
         fp = open(weightfile, "rb")
 
-        header = np.fromfile(fp, dtype=np.int32, count=4)
+        header = np.fromfile(fp, dtype=np.int32, count=5)
         self.header = torch.from_numpy(header)
         self.seen = self.header[3]
 

@@ -31,7 +31,7 @@ def rectangle(predictions, image, classes, args, path=None):
         image_name = path.split('/')[-1]
     else:
         image_name = args.image.split('/')[-1]
-    result_path = f"{output_folder}/output.jpg"
+    result_path = f"output.jpg"
     cv2.imwrite(result_path, image)
 
 
@@ -42,7 +42,6 @@ def get_boxes(predictions):
     :return: upper left point, bottom right point, label
     """
     boxes = list()
-    print(predictions)
     for each in predictions:
         upper_left = (int(each[1]), int(each[2]))
         bottom_right = (int(each[3]), int(each[4]))
