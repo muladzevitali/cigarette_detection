@@ -18,12 +18,12 @@ def create_app(config) -> Flask:
     database.init_app(application)
     application.logger = Logger().get_logger()
 
-    from .views import (Search, Insert, Update)
+    from .views import (Detect, Insert, Update)
 
     # Make an restful endpoints
     api = Api(application)
-    # Add searching endpoint
-    api.add_resource(Search, "/search")
+    # Add detection endpoint
+    api.add_resource(Detect, "/detect")
     # Add insertion endpoint
     api.add_resource(Insert, "/insert")
     # Add update endpoint

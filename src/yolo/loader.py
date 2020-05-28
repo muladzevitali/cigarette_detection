@@ -10,10 +10,8 @@ def load_model():
     Load network
     """
     # Set up the neural network
-    print("Loading network.....")
     model = Darknet(yolo_config.config_file)
     model.load_weights(yolo_config.weights_file)
-    print("Network successfully loaded")
 
     # Set height for model input
     model.net_info["height"] = int(yolo_config.resolution)
@@ -36,7 +34,6 @@ def load_images(path=None):
     """
     # Detection phase
     image = path if path else os.path.join(os.getcwd(), 'image.jpg')
-    image_resolution = int(yolo_config.resolution)
     if not os.path.exists(yolo_config.output_folder):
         os.makedirs(yolo_config.output_folder)
 

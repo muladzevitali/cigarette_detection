@@ -15,5 +15,7 @@ class YoloDetector:
         """Detect objects on image"""
         if isinstance(image, str):
             image = prepare_image(image, path=True)
+        else:
+            image = prepare_image(image, path=False)
 
         return detection(image, self.model, draw=save_output)

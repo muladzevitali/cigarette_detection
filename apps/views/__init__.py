@@ -1,3 +1,3 @@
 from .insert import Insert
-from .search import Search
+from .detect import Detect
 from .update import Update
