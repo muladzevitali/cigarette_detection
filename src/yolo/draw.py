@@ -5,7 +5,7 @@ import cv2
 from src.config import yolo_config
 
 
-def rectangle(predictions, image, classes, path=None):
+def rectangle(predictions, image, classes, path=None) -> None:
     """
     Draw rectangle over objects in image
     """
@@ -23,8 +23,7 @@ def rectangle(predictions, image, classes, path=None):
     image_name = path.split('/')[-1] if path else 'output.jpg'
     image_path = os.path.join(yolo_config.output_folder, image_name)
 
-    a = cv2.imwrite(image_path, image)
-    print(a)
+    cv2.imwrite(image_path, image)
 
 
 def get_boxes(predictions):

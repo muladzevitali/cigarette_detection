@@ -1,4 +1,4 @@
-from typing import Union
+from typing import (Union, List)
 
 import numpy
 
@@ -11,11 +11,9 @@ class YoloDetector:
     def __init__(self):
         self.model = load_model()
 
-    def detect(self, image: Union[str, numpy.array], save_output: bool = False):
+    def detect(self, image: Union[str, numpy.array], save_output: bool = False) -> List[list]:
         """Detect objects on image"""
         if isinstance(image, str):
             image = prepare_image(image, path=True)
 
-        results = detection(image, self.model, draw=save_output)
-
-        return results
+        return detection(image, self.model, draw=save_output)
