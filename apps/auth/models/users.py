@@ -1,11 +1,12 @@
 """User class for applications"""
 
-from passlib.apps import custom_app_context
+from hashlib import sha256
+
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from apps import database
 from src.config import table_prefix
-from sqlalchemy.ext.hybrid import hybrid_property
-from hashlib import sha256
+
 
 class User(database.Model):
     """User Model"""
@@ -19,7 +20,7 @@ class User(database.Model):
 
     @hybrid_property
     def password(self):
-        return self.password
+        return self._password
 
     @password.setter
     def password(self, password: str) -> None:

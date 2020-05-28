@@ -30,6 +30,7 @@ class Application:
     SQLALCHEMY_ECHO = config["APPLICATION"]["SQLALCHEMY_ECHO"] == "true"
     SQLALCHEMY_TRACK_MODIFICATIONS = config["APPLICATION"]["SQLALCHEMY_TRACK_MODIFICATIONS"] == "true"
     SQLALCHEMY_DATABASE_URI = ApplicationDatabase.uri
+    ENABLE_REGISTRATION = config['APPLICATION']['ENABLE_REGISTRATION'] == 'true'
 
     @staticmethod
     def init_app(app):

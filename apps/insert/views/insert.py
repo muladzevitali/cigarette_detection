@@ -1,11 +1,8 @@
 """Insertion endpoints for applications"""
 
-from flask import request, current_app
-from flask_restful import Resource, abort
+from flask import current_app
+from flask_restful import Resource
 from werkzeug.local import LocalProxy
-
-from src.faiss_index import faiss_index
-from src.config import messages
 
 logger = LocalProxy(lambda: current_app.logger)
 
@@ -14,7 +11,10 @@ class Insert(Resource):
     """
     Insert vectors in faiss database
     """
+    pass
 
+
+"""
     def put(self):
         token = request.headers.get('Authorization')
         # Check if features vector is specified
@@ -37,3 +37,4 @@ class Insert(Resource):
 
         logger.info(f"faiss index length: {len(faiss_index)}")
         return {"indices": result_or_status_message}
+"""

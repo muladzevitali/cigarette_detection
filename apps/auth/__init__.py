@@ -4,9 +4,9 @@ from flask import request
 from flask_restful import abort
 from jwt import decode, DecodeError, ExpiredSignatureError
 
-from .views import (Login, Register)
 from apps.auth.models import User
 from src.config import (app_config)
+from .views import (Login, Register)
 
 
 def login_required(method):
@@ -15,7 +15,7 @@ def login_required(method):
     """
 
     @functools.wraps(method)
-    def wrapper(_):
+    def wrapper(*args, **kwargs):
         # Get the token from header
         token = request.headers.get('Authorization')
         if not token:
@@ -24,18 +24,16 @@ def login_required(method):
             # Try to decode the token
             decoded = decode(token, app_config.SECRET_KEY, algorithms='HS256')
         except DecodeError:
-            abort(http_status_code=403, message='Token invalid.')
-            return
+            return abort(http_status_code=403, message='Token invalid.')
         except ExpiredSignatureError:
-            abort(http_status_code=403, message='Token expired.')
-            return
+            return abort(http_status_code=403, message='Token expired.')
         # Get the username from decoded token
         username = decoded['username']
         # Check if the username exist in our database
         user = User.query.get(username)
         if not user:
-            abort(http_status_code=404, message='User not found.')
+            return abort(http_status_code=404, message='User not found.')
 
-        return method(user)
+        return method(*args, **kwargs)
 
     return wrapper
