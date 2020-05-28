@@ -4,6 +4,9 @@ import configparser
 import os
 from dataclasses import dataclass
 
+import torch
+
+
 config = configparser.ConfigParser()
 config.read("config.ini")
 base_dir = os.path.abspath('.')
@@ -42,7 +45,6 @@ class Media:
     media_path = config["MEDIA"]["MEDIA_PATH"]
     log_file_info = config["LOGGER"]["LOG_FILE_INFO"]
     log_file_error = config["LOGGER"]["LOG_FILE_ERROR"]
-    index_path = config["MEDIA"]["FAISS_INDEX_PATH"]
 
     def __init__(self):
         os.makedirs(self.media_path, exist_ok=True)
@@ -50,3 +52,18 @@ class Media:
 
 class FaissConfiguration:
     dimension = int(config["FAISS_DATABASE"]["INDEX_DIMENSION"])
+    index_path = config["FAISS_DATABASE"]["FAISS_INDEX_PATH"]
+
+
+@dataclass(init=False)
+class YoloConfiguration:
+    output_folder = os.path.join(base_dir, config['YOLO']['OUTPUT_FOLDER'])
+    batch_size = int(config['YOLO']['BATCH_SIZE'])
+    confidence = float(config['YOLO']['CONFIDENCE'])
+    nms_thresh = float(config['YOLO']['NMS_THRESH'])
+    config_file = config['YOLO']['CONFIG']
+    weights_file = config['YOLO']['WEIGHTS']
+    names_file = config['YOLO']['NAMES']
+    resolution = int(config['YOLO']['RESOLUTION'])
+    scales = config['YOLO']['SCALES']
+    cuda = torch.cuda.is_available()

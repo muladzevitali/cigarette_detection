@@ -3,9 +3,10 @@ import numpy as np
 import torch
 from PIL import Image
 
+from src.config import yolo_config
+
 
 def letterbox_image(img, inp_dim):
-
     img_w, img_h = img.shape[1], img.shape[0]
     w, h = inp_dim
     new_w = int(img_w * min(w / img_w, h / img_h))
@@ -19,17 +20,17 @@ def letterbox_image(img, inp_dim):
     return canvas
 
 
-def prep_image(img, inp_dim, path=True):
+def prepare_image(img, path=True):
     """
-    Prepare image for inputting to the neural network. 
-    
+    Prepare image for inputting to the neural network.
     Returns a Variable 
     """
     orig_im = cv2.imread(img) if path else img
     dim = orig_im.shape[1], orig_im.shape[0]
-    img = (letterbox_image(orig_im, (inp_dim, inp_dim)))
+    img = (letterbox_image(orig_im, (yolo_config.resolution, yolo_config.resolution)))
     img_ = img[:, :, ::-1].transpose((2, 0, 1)).copy()
     img_ = torch.from_numpy(img_).float().div(255.0).unsqueeze(0)
+
     return img_, orig_im, dim
 
 
@@ -42,6 +43,7 @@ def prep_image_pil(img, network_dim):
     img = img.view(*network_dim, 3).transpose(0, 1).transpose(0, 2).contiguous()
     img = img.view(1, 3, *network_dim)
     img = img.float().div(255.0)
+
     return img, orig_im, dim
 
 

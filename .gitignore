@@ -5,3 +5,4 @@
 *.index
 media/logs/
 tests/
+media/outputs
