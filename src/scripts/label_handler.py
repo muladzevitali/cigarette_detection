@@ -1,10 +1,10 @@
 import json
 import os
-from math import (floor, ceil)
+from secrets import token_hex
 from shutil import copyfile
 from typing import (List, Tuple, Optional)
-from secrets import token_hex
-from PIL import Image
+
+import cv2
 
 
 def form_rectangle(points: List[List]) -> Optional[Tuple[Tuple[int, int], Tuple[int, int]]]:
@@ -48,6 +48,7 @@ def convert_labels_to_yolo(width, height, box):
 
     dw = 1. / width
     dh = 1. / height
+    # Get center center coordinates of rectangle
     x = (box[0] + box[1]) / 2.0
     y = (box[2] + box[3]) / 2.0
     w = box[1] - box[0]
@@ -56,8 +57,7 @@ def convert_labels_to_yolo(width, height, box):
     w = w * dw
     y = y * dh
     h = h * dh
-    if y > 1:
-        print(width, height, box)
+
     return x, y, w, h
 
 
@@ -77,14 +77,15 @@ def create_yolo_label_file(file_: tuple, current_class_id: str, yolo_dataset_dir
     # Form rectangles from labeled points
     rectangles = get_rectangles(image_metadata)
     # Get image sizes
-    image = Image.open(image_path)
-    width = int(image.size[0])
-    height = int(image.size[1])
+    image = cv2.imread(image_path)
+    height, width = image.shape[:2]
     # Iterate throw rectangles and write each of them on a separate line
     for rectangle in rectangles:
         box = (rectangle[0][0], rectangle[1][0], rectangle[0][1], rectangle[1][1])
         yolo_bounding_box = convert_labels_to_yolo(width, height, box)
+
         output_file.write(f'{current_class_id} ' + " ".join([str(a) for a in yolo_bounding_box]) + '\n')
+
     if not os.path.isfile(image_new_path):
         copyfile(image_path, image_new_path)
 
