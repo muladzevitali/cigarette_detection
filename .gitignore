@@ -5,6 +5,7 @@
 *.index
 media/logs/
 tests/
+<<<<<<< HEAD
 **.idea/
 **__pycache__/
 application/media/logs
@@ -31,3 +32,6 @@ yarn-debug.log*
 yarn-error.log*
 **package-lock.json
 **.pem
+=======
+media/outputs
+>>>>>>> b25f279e76c61ff12017d720a32e98ffbf28dd67

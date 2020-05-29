@@ -1,29 +1,31 @@
 import torch
 
+from src.config import yolo_config
+from src.yolo.util import write_results, load_classes
 from .draw import (rectangle, get_boxes)
-from ..yolo.util import write_results, load_classes
+
+classes = load_classes(yolo_config.names_file)
+height = yolo_config.resolution
 
 
-def detection(image_loader, model, args, draw=True, path=None):
-    classes = load_classes(args.names)
-    image_processed = image_loader[0].cuda() if args.cuda else image_loader[0]
+def detection(image_loader, model, draw=True):
+    image_processed = image_loader[0].cuda() if yolo_config.cuda else image_loader[0]
     # Original images from batches
     image_original = image_loader[1]
-    # Dimension of original image
-    height = model.net_info['height']
     # Get predictions
-    predictions = predict(model, image_processed, classes, args)
+    predictions = predict(model, image_processed)
     if type(predictions) == int:
         return 0
-    if args.cuda:
+    if yolo_config.cuda:
         torch.cuda.synchronize()
     # Predictions rescaled to the original image
-    scaled_predictions = rescale_prediction(image_loader, predictions, height, args)
+    scaled_predictions = rescale_prediction(image_loader, predictions)
     # Save image in output folder
     if draw:
-        rectangle(scaled_predictions, image_original, classes, args, path)
+        rectangle(scaled_predictions, image_original, classes)
     # Get boxes from detected objects
     boxes = get_boxes(predictions)
+
     return boxes
 
 
@@ -42,32 +44,24 @@ def handle_dimensions(image_loader, predictions, cuda):
     return image_dimensions
 
 
-def predict(model, image_processed, classes, args):
+def predict(model, image_processed):
     """
     Get predictions from model
-    :param model: network model
-    :param image_processed: preprocessed image
-    :param classes: classes for detection
-    :param args: program parameters
-    :return: predictions
     """
     num_classes = len(classes)
     with torch.no_grad():
-        predictions = model(image_processed, args.cuda)
-    predictions = write_results(predictions, args.confidence, num_classes, nms=True, nms_conf=args.nms_thresh)
+        predictions = model(image_processed, yolo_config.cuda)
+
+    predictions = write_results(predictions, yolo_config.confidence, num_classes, nms=True,
+                                nms_conf=yolo_config.nms_thresh)
     return predictions
 
 
-def rescale_prediction(image_loader, predictions, height, args):
+def rescale_prediction(image_loader, predictions):
     """
     Rescale predictions to get boxes according to original size of image
-    :param image_loader: loader of images
-    :param predictions: predictions from network
-    :param height: height of input image
-    :param args: program argumetns
-    :return: rescaled predictions
     """
-    image_dimensions = handle_dimensions(image_loader, predictions, args.cuda)
+    image_dimensions = handle_dimensions(image_loader, predictions, yolo_config.cuda)
     scaling_factor = torch.min(height / image_dimensions, 1)[0].view(-1, 1)
     predictions[:, [1, 3]] -= (height - scaling_factor * image_dimensions[:, 0].view(-1, 1)) / 2
     predictions[:, [2, 4]] -= (height - scaling_factor * image_dimensions[:, 1].view(-1, 1)) / 2

@@ -3,6 +3,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
+
+from src.config import yolo_config
 from .bbox import bbox_iou
 
 
@@ -21,7 +23,7 @@ def convert2cpu(matrix):
         return matrix
 
 
-def predict_transform(prediction, inp_dim, anchors, num_classes, cuda=True):
+def predict_transform(prediction, inp_dim, anchors, num_classes):
     batch_size = prediction.size(0)
     stride = inp_dim // prediction.size(2)
     grid_size = inp_dim // stride
@@ -46,7 +48,7 @@ def predict_transform(prediction, inp_dim, anchors, num_classes, cuda=True):
     x_offset = torch.FloatTensor(a).view(-1, 1)
     y_offset = torch.FloatTensor(b).view(-1, 1)
 
-    if cuda:
+    if yolo_config.cuda:
         x_offset = x_offset.cuda()
         y_offset = y_offset.cuda()
 
@@ -57,7 +59,7 @@ def predict_transform(prediction, inp_dim, anchors, num_classes, cuda=True):
     # log space transform height and the width
     anchors = torch.FloatTensor(anchors)
 
-    if cuda:
+    if yolo_config.cuda:
         anchors = anchors.cuda()
 
     anchors = anchors.repeat(grid_size * grid_size, 1).unsqueeze(0)
@@ -98,7 +100,7 @@ def write_results(prediction, confidence, num_classes, nms=True, nms_conf=0.4):
     prediction = prediction * conf_mask
 
     try:
-        ind_nz = torch.nonzero(prediction[:, :, 4]).transpose(0, 1).contiguous()
+        ind_nz = torch.nonzero(prediction[:, :, 4], as_tuple=False).transpose(0, 1).contiguous()
     except:
         return 0
 
@@ -117,7 +119,6 @@ def write_results(prediction, confidence, num_classes, nms=True, nms_conf=0.4):
     for ind in range(batch_size):
         # select the image from the batch
         image_pred = prediction[ind]
-
         # Get the class having maximum score, and the index of that class
         # Get rid of num_classes softmax scores
         # Add the class index and the class score of class having maximum score
@@ -128,8 +129,7 @@ def write_results(prediction, confidence, num_classes, nms=True, nms_conf=0.4):
         image_pred = torch.cat(seq, 1)
 
         # Get rid of the zero entries
-        non_zero_ind = (torch.nonzero(image_pred[:, 4]))
-
+        non_zero_ind = (torch.nonzero(image_pred[:, 4], as_tuple=False))
         image_pred_ = image_pred[non_zero_ind.squeeze(), :].view(-1, 7)
 
         # Get the various classes detected in the image
@@ -141,7 +141,7 @@ def write_results(prediction, confidence, num_classes, nms=True, nms_conf=0.4):
         for cls in img_classes:
             # get the detections with one particular class
             cls_mask = image_pred_ * (image_pred_[:, -1] == cls).float().unsqueeze(1)
-            class_mask_ind = torch.nonzero(cls_mask[:, -2]).squeeze()
+            class_mask_ind = torch.nonzero(cls_mask[:, -2], as_tuple=False).squeeze()
 
             image_pred_class = image_pred_[class_mask_ind].view(-1, 7)
 
@@ -170,7 +170,7 @@ def write_results(prediction, confidence, num_classes, nms=True, nms_conf=0.4):
                     image_pred_class[i + 1:] *= iou_mask
 
                     # Remove the non-zero entries
-                    non_zero_ind = torch.nonzero(image_pred_class[:, 4]).squeeze()
+                    non_zero_ind = torch.nonzero(image_pred_class[:, 4], as_tuple=False).squeeze()
                     image_pred_class = image_pred_class[non_zero_ind].view(-1, 7)
 
             # Concatenate the batch_id of the image to the detection

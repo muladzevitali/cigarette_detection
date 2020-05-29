@@ -1,4 +1,5 @@
 import random
+
 import cv2
 import torch
 
@@ -80,7 +81,6 @@ def bbox_iou(box1, box2):
 def pred_corner_coord(prediction):
     # Get indices of non-zero confidence bboxes
     ind_nz = torch.nonzero(prediction[:, :, 4]).transpose(0, 1).contiguous()
-
     box = prediction[ind_nz[0], ind_nz[1]]
 
     box_a = box.new(box.shape)

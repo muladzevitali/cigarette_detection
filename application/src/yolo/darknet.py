@@ -2,6 +2,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+
 from .util import convert2cpu as cpu
 from .util import predict_transform
 
@@ -288,7 +289,7 @@ class Darknet(nn.Module):
                 num_classes = int(modules[i]["classes"])
                 # Output the result
                 x = x.data
-                x = predict_transform(x, inp_dim, anchors, num_classes, cuda)
+                x = predict_transform(x, inp_dim, anchors, num_classes)
                 if type(x) == int:
                     continue
                 if not write:
