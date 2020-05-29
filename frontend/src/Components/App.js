@@ -14,7 +14,7 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: null,
+            data: [],
             searchBarData: {
                 classify: true,
                 localize: true,
@@ -48,7 +48,7 @@ class App extends React.Component {
     render() {
         const dataHeaderStyle = {
             paddingLeft: null,
-            paddingTop: '2%',
+            paddingTop: '0%',
             marginLeft: '30%'
         };
         const dataSearchBarStyle = {

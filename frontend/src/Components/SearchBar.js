@@ -21,14 +21,14 @@ class SearchBar extends React.Component {
         this.setState({showFilters: !showFilters})
     };
     onChangeImage = (event) => {
-        console.log(event.target.name, event.target, event.target.path)
-        this.setState({[event.target.name]: event.target.value})
+        console.log(event.target.name, event.target, event.target.path);
+        this.setState({[event.target.name]: event.target.value});
         this.setState({imageName: event.target.value})
     };
 
     onCheck = (event) => {
         this.setState({[event.target.name]: !this.state[event.target.name]})
-    }
+    };
     isFormValid = data => {
         const {image} = {...data};
         if (!image) {
