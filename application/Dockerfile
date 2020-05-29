@@ -1,4 +1,4 @@
-FROM python:3.8.1
+FROM continuumio/anaconda3
 
 WORKDIR /usr/src/application
 

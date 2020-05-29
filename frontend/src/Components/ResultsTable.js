@@ -75,26 +75,7 @@ class ResultsTable extends React.Component {
                                         </Col>
                                     </Row>
                                 </ListGroupItem>
-                                <ListGroupItem className='resultsListItem'>
-                                    <Row>
-                                        <Col className='nameTarget'>
-                                            Top point:
-                                        </Col>
-                                        <Col>
-                                            (3, 4)
-                                        </Col>
-                                    </Row>
-                                </ListGroupItem>
-                                <ListGroupItem className='resultsListItem'>
-                                    <Row>
-                                        <Col className='nameTarget'>
-                                            Bottom point:
-                                        </Col>
-                                        <Col>
-                                            (3, 4)
-                                        </Col>
-                                    </Row>
-                                </ListGroupItem>
+
                             </ListGroup>
                         </Card>
                     </Row>

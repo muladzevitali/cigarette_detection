@@ -1,2 +1,4 @@
-# Cigarette Detection
+# Cigarette Detector
+> Find and classify cigarette packages on an image
+
 You can find files attached [here](https://drive.google.com/open?id=1FFlhh-C7ZW8KVAnNNwFyOwB6OrP7667_)
