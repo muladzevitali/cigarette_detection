@@ -1,46 +1,3 @@
-/*div.upload {*/
-/*    background-color:#fff;*/
-/*    border: 1px solid #ddd;*/
-/*    border-radius:5px;*/
-/*    display:inline-block;*/
-/*    height: 30px;*/
-/*    padding:3px 40px 3px 3px;*/
-/*    position:relative;*/
-/*    width: auto;*/
-/*}*/
-
-/*div.upload:hover {*/
-/*    opacity:0.95;*/
-/*}*/
-
-/*div.upload input[type="file"] {*/
-/*    display: input-block;*/
-/*    width: 100%;*/
-/*    height: 30px;*/
-/*    opacity: 0;*/
-/*    cursor:pointer;*/
-/*    position:absolute;*/
-/*    left:0;*/
-/*}*/
-/*.uploadButton {*/
-/*    background-color: #425F9C;*/
-/*    border: none;*/
-/*    border-radius: 3px;*/
-/*    color: #FFF;*/
-/*    cursor:pointer;*/
-/*    display: inline-block;*/
-/*    height: 30px;*/
-/*    margin-right:15px;*/
-/*    width: auto;*/
-/*    padding:0 20px;*/
-/*    box-sizing: content-box;*/
-/*}*/
-
-/*.fileName {*/
-/*    font-family: Arial;*/
-/*    font-size:14px;*/
-/*}*/
-
 div.upload {
     border: 1px solid;
     background: transparent !important;
@@ -70,7 +27,7 @@ div.upload:hover {
 }
 
 .uploadButton {
-    background-color: green;
+    background-color: #008000;
     border: none;
     border-radius: 3px;
     color: #FFF;
@@ -132,8 +89,8 @@ div.upload:hover {
     font-weight: 500 !important;
 }
 .imageFilter input[type="checkbox"]:checked + label:before{
-    border-color: green !important;
-    background-color: green;
+    border-color: #008000 !important;
+    background-color: #008000;
 }
 .searchFilterRow {
     position: absolute;

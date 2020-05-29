@@ -1,9 +1,6 @@
 import React from 'react'
-import axios from 'axios'
-import {crawlerUrl} from "../Config";
-import {Card, Table, Image, Form, Toast, Navbar, Row, Col, ListGroup, ListGroupItem} from 'react-bootstrap'
+import {Card, Col, Form, ListGroup, ListGroupItem, Row} from 'react-bootstrap'
 import '../Styles/ResultsTable.css'
-import abbreviateNumber from '../Utils/abbreviateNumber'
 
 
 class ResultsTable extends React.Component {
@@ -20,19 +17,72 @@ class ResultsTable extends React.Component {
             <div>
                 <Card className="resultsCard">
                     <Row>
-                        <Card style={{width: '18rem'}} bg='secondary' className='resultsMainCard'>
+                        <Card className='resultsMainCard' style={{height: 'auto'}}>
                             <Card.Img variant="top" src="/output.jpg" className='cigaretteImage'/>
                             <ListGroup className="list-group-flush">
-                                <ListGroupItem variant='dark'>Found cigarettes: 63</ListGroupItem>
+                                <ListGroupItem className='resultsListItem'>
+                                    <Row>
+                                    <Col className='nameTarget'>
+                                        Found 63 packs of cigarette
+                                    </Col>
+
+                                </Row></ListGroupItem>
                             </ListGroup>
                         </Card>
 
-                        <Card style={{width: '18rem'}} bg='secondary' className='resultsMainCard'>
+                        <Card className='resultsMainCard'>
                             <Card.Img variant="top" src="/output.jpg" className='cigaretteImage'/>
                             <ListGroup className="list-group-flush">
-                                <ListGroupItem variant='dark'>Company: Malboro</ListGroupItem>
-                                <ListGroupItem variant='dark'>Found cigarettes: 63</ListGroupItem>
-                                <ListGroupItem variant='dark'>Found cigarettes: 63</ListGroupItem>
+                                <ListGroupItem className='resultsListItem'>
+                                    <Row>
+                                        <Col className='nameTarget'>
+                                            Company:
+                                        </Col>
+                                        <Col>
+                                            <Form>
+                                                <div className='companyName'>
+                                                    <Form.Control aria-label="Word"
+                                                                  className='companyNameInput'
+                                                                  name='companyName'
+                                                                  type="text"
+                                                                  autoFocus
+                                                                  value='Malboro'
+                                                    />
+                                                </div>
+                                            </Form>
+                                        </Col>
+                                    </Row>
+                                </ListGroupItem>
+                                <ListGroupItem className='resultsListItem'>
+                                    <Row>
+                                        <Col className='nameTarget'>
+                                            Precision:
+                                        </Col>
+                                        <Col>
+                                            0.8
+                                        </Col>
+                                    </Row>
+                                </ListGroupItem>
+                                <ListGroupItem className='resultsListItem'>
+                                    <Row>
+                                        <Col className='nameTarget'>
+                                            Top point:
+                                        </Col>
+                                        <Col>
+                                            (3, 4)
+                                        </Col>
+                                    </Row>
+                                </ListGroupItem>
+                                <ListGroupItem className='resultsListItem'>
+                                    <Row>
+                                        <Col className='nameTarget'>
+                                            Bottom point:
+                                        </Col>
+                                        <Col>
+                                            (3, 4)
+                                        </Col>
+                                    </Row>
+                                </ListGroupItem>
                             </ListGroup>
                         </Card>
                     </Row>
