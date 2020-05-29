@@ -1,4 +1,4 @@
-.resultsCard {
+.resultsMainCard {
     background-color: #282c34 !important;
     margin: 3% auto !important;
     border: 0 !important;
@@ -7,9 +7,10 @@
 .cigaretteImage {
     width: 300px;
     height: 200px;
+    cursor: pointer;
 }
 
-.resultsMainCard{
+.resultsSmallCard {
     background-color: #282c34 !important;
     border: 5px !important;
     margin-right: 1%;
@@ -29,8 +30,7 @@
     border: 0 !important;
 }
 
-input[name='companyName']:focus
-{
+input[name='companyName']:focus {
     background-color: lightgray !important;
     color: black !important;
 }
@@ -40,10 +40,16 @@ input[name='companyName']:focus
     height: 100%;
 }
 
-.artistNameChangeToast{
+.artistNameChangeToast {
     background-color: lightgreen !important;
 }
-.nameTarget{
+
+.nameTarget {
     margin: auto;
     font-weight: bold;
+}
+
+.imageModal .modal-content {
+    background-color: transparent !important;
+    border: none !important;
 }
