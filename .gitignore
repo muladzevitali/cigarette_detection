@@ -1,11 +1,9 @@
-.idea/
 **_pycache__/
 *.weights
 *.db
 *.index
 media/logs/
 tests/
-<<<<<<< HEAD
 **.idea/
 **__pycache__/
 application/media/logs
@@ -32,6 +30,15 @@ yarn-debug.log*
 yarn-error.log*
 **package-lock.json
 **.pem
-=======
 media/outputs
->>>>>>> b25f279e76c61ff12017d720a32e98ffbf28dd67
+**/__pycache__/*
+.ipynb_checkpoints/*
+notes.txt
+config.ini
+faiss_server/media/logs/
+faiss_server/media/
+venv/
+*.csv
+*.xlsx
+*.sock
+tests/media/
