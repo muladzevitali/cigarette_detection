@@ -6,7 +6,6 @@ import '../Styles/SearchBar.css'
 class SearchBar extends React.Component {
     constructor(props) {
         super(props);
-        this.filterCommas = new RegExp(',', 'g');
         this.state = {
             showFilters: false,
             validated: null,
@@ -16,18 +15,28 @@ class SearchBar extends React.Component {
         }
     }
 
+
     filterButtonHandler = () => {
         const showFilters = this.state.showFilters;
         this.setState({showFilters: !showFilters})
     };
+
+    onKeyDown = event => {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            this.onFormSubmit(event)
+        }
+    };
+
     onChangeImage = (event) => {
-        this.setState({[event.target.name]: event.target.value});
-        this.setState({imageName: event.target.value})
+        this.setState({[event.target.name]: event.target.files[0]});
+        this.setState({imageName: event.target.files[0].name})
     };
 
     onCheck = (event) => {
         this.setState({[event.target.name]: !this.state[event.target.name]})
     };
+
     isFormValid = data => {
         const {image} = {...data};
         if (!image) {
@@ -36,9 +45,9 @@ class SearchBar extends React.Component {
         }
         return true
     };
+
     onFormSubmit = event => {
         event.preventDefault();
-        console.log('submitting');
 
         const data = {
             image: this.state.image,
@@ -58,10 +67,10 @@ class SearchBar extends React.Component {
     };
 
     render() {
-        let searchButtonStyle = this.state.image.length > 2 ? {filter: 'invert(0.6) brightness(2.0)'} : {filter: 'invert(0.3)'};
+        let searchButtonStyle = this.state.imageName ? {filter: 'invert(0.6) brightness(2.0)'} : {filter: 'invert(0.3)'};
 
         return (
-            <Form noValidate onSubmit={this.onFormSubmit}>
+            <Form noValidate onSubmit={this.onFormSubmit} onKeyDown={this.onKeyDown}>
                 <Form.Row>
                     <Form.Group as={Col}>
                         <InputGroup size="lg" className={!this.state.image && 'is-invalid'}>

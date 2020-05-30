@@ -43,3 +43,4 @@ venv/
 *.sock
 tests/media/
 **.log
+application/media/results

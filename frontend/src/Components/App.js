@@ -5,7 +5,7 @@ import Header from './Header'
 import ResultsTable from './ResultsTable'
 import PageLoader from './PageLoader'
 import {detectionUrl} from '../Config'
-import {Container, Col, Row} from 'react-bootstrap'
+import {Col, Container, Row} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../Styles/App.css';
 
@@ -26,19 +26,23 @@ class App extends React.Component {
 
     handleFormSubmit = (data) => {
         this.setState({requestLoading: true});
-        const params = {localize: data.localize, classify: data.classify, image: data.image};
-        console.log(params, detectionUrl);
-        axios.post(detectionUrl,
-            {params})
+        // Create form
+        let bodyFormData = new FormData();
+        bodyFormData.append('image', data.image);
+        bodyFormData.append('localize', data.localize);
+        bodyFormData.append('classify', data.classify);
+        // Send form and handle results
+        axios.post(detectionUrl, bodyFormData)
             .then(
                 (response) => {
                     this.setState({data: response.data.data || [], searchBarData: data, requestLoading: false})
                 }
-            ).catch(error => {
-            data = {...data, errorMessage: 'Connection problem', validated: false};
-            this.setState({requestLoading: false, searchBarData: data,});
-            console.log(error)
-        });
+            )
+            .catch(error => {
+                data = {...data, errorMessage: 'Connection problem', validated: false};
+                this.setState({requestLoading: false, searchBarData: data,});
+                console.log(error.response)
+            });
 
 
     };
@@ -60,7 +64,7 @@ class App extends React.Component {
             <div className='App align-self-center'>
                 {this.state.data ?
                     (
-                        <Container fluid className='dataContainer'>
+                        <Container fluid className='dataContainer align-self-center'>
                             <Row style={{alignContent: 'baseline'}}>
                                 <Col xs='3' md='2'>
                                     <Header style={dataHeaderStyle}/>
@@ -73,7 +77,9 @@ class App extends React.Component {
 
                             </Row>
                             <Row>
-                                <Col xs='10' style={{paddingLeft: '10%', marginTop: '1%'}}>
+
+                                <Col xs='10' style={{paddingLeft: '10%', marginTop: '1%'}}
+                                     className='align-self-center'>
                                     <ResultsTable data={this.state.data}/>
                                 </Col>
                             </Row>

@@ -6,7 +6,6 @@ from dataclasses import dataclass
 
 import torch
 
-
 config = configparser.ConfigParser()
 config.read("config.ini")
 base_dir = os.path.abspath('.')
@@ -42,12 +41,12 @@ class Application:
 
 @dataclass()
 class Media:
-    media_path = config["MEDIA"]["MEDIA_PATH"]
-    log_file_info = config["LOGGER"]["LOG_FILE_INFO"]
-    log_file_error = config["LOGGER"]["LOG_FILE_ERROR"]
+    media_path = os.path.join(base_dir, config["MEDIA"]["MEDIA_PATH"])
+    result_files_path = os.path.join(media_path, 'results')
 
     def __init__(self):
         os.makedirs(self.media_path, exist_ok=True)
+        os.makedirs(self.result_files_path, exist_ok=True)
 
 
 class FaissConfiguration:

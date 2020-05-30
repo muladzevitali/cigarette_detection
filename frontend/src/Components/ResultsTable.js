@@ -1,83 +1,93 @@
 import React from 'react'
 import {Card, Col, Form, ListGroup, ListGroupItem, Modal, Row} from 'react-bootstrap'
 import '../Styles/ResultsTable.css'
-
+import {mediaUrl} from '../Config'
 
 class ResultsTable extends React.Component {
     constructor(props) {
         super(props);
-        const modifiedData = this.props.data.map(item => {
-            return item
-        });
         this.state = {
-            data: modifiedData,
+            data: this.props.data,
             showModal: false,
             modalImagePath: null
-        }
+        };
+    }
+
+    componentDidMount() {
+        window.scrollTo(0, 0);
     }
 
     showModal = imagePath => event => {
         this.setState({showModal: true, modalImagePath: imagePath})
-    }
+    };
+
+    renderDetections = predictions => {
+        return predictions.map((item, index) => {
+            return (
+                <Card className='resultsSmallCard' key={index}>
+                    <Card.Img variant="top" src={`${mediaUrl}/${item.image_path}`}
+                              className='cigaretteImage'
+                              onClick={this.showModal(`${mediaUrl}/${item.image_path}`)}/>
+                    <ListGroup className="list-group-flush">
+                        <ListGroupItem className='resultsListItem'>
+                            <Row>
+                                <Col className='nameTarget'>
+                                    Company:
+                                </Col>
+                                <Col>
+                                    <Form>
+                                        <div className='companyName'>
+                                            <Form.Control aria-label="Word"
+                                                          className='companyNameInput'
+                                                          name='companyName'
+                                                          type="text"
+                                                          autoFocus
+                                                          defaultValue='Malboro'
+                                            />
+                                        </div>
+                                    </Form>
+                                </Col>
+                            </Row>
+                        </ListGroupItem>
+                        <ListGroupItem className='resultsListItem'>
+                            <Row>
+                                <Col className='nameTarget'>
+                                    Precision:
+                                </Col>
+                                <Col>
+                                    {item.precision}
+                                </Col>
+                            </Row>
+                        </ListGroupItem>
+
+                    </ListGroup>
+                </Card>
+            )
+        })
+    };
 
     render() {
+
         return (
             <div>
                 <Card className="resultsMainCard">
                     <Row>
                         <Card className='resultsSmallCard' style={{height: 'auto'}}>
-                            <Card.Img variant="top" src="/output.jpg"
+                            <Card.Img variant="top" src={`${mediaUrl}/${this.state.data.image.image_path}`}
                                       className='cigaretteImage'
-                                      onClick={this.showModal('/output.jpg')}/>
+                                      onClick={this.showModal(`${mediaUrl}/${this.state.data.image.image_path}`)}/>
                             <ListGroup className="list-group-flush">
                                 <ListGroupItem className='resultsListItem'>
                                     <Row>
                                         <Col className='nameTarget'>
-                                            Found 63 packs of cigarette
+                                            Found {this.state.data.image['found_objects']} packs of cigarette
                                         </Col>
 
                                     </Row></ListGroupItem>
                             </ListGroup>
                         </Card>
 
-                        <Card className='resultsSmallCard'>
-                            <Card.Img variant="top" src="/output.jpg"
-                                      className='cigaretteImage'
-                                      onClick={this.showModal('/output.jpg')}/>
-                            <ListGroup className="list-group-flush">
-                                <ListGroupItem className='resultsListItem'>
-                                    <Row>
-                                        <Col className='nameTarget'>
-                                            Company:
-                                        </Col>
-                                        <Col>
-                                            <Form>
-                                                <div className='companyName'>
-                                                    <Form.Control aria-label="Word"
-                                                                  className='companyNameInput'
-                                                                  name='companyName'
-                                                                  type="text"
-                                                                  autoFocus
-                                                                  defaultValue='Malboro'
-                                                    />
-                                                </div>
-                                            </Form>
-                                        </Col>
-                                    </Row>
-                                </ListGroupItem>
-                                <ListGroupItem className='resultsListItem'>
-                                    <Row>
-                                        <Col className='nameTarget'>
-                                            Precision:
-                                        </Col>
-                                        <Col>
-                                            0.8
-                                        </Col>
-                                    </Row>
-                                </ListGroupItem>
-
-                            </ListGroup>
-                        </Card>
+                        {this.renderDetections(this.state.data.detections)}
                     </Row>
 
                 </Card>
@@ -92,7 +102,7 @@ class ResultsTable extends React.Component {
 }
 
 function ImageModal(props) {
-    const {image_path} = {...props}
+    const {image_path} = {...props};
     return (
         <Modal
             {...props}
