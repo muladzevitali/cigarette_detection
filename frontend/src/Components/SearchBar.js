@@ -21,7 +21,6 @@ class SearchBar extends React.Component {
         this.setState({showFilters: !showFilters})
     };
     onChangeImage = (event) => {
-        console.log(event.target.name, event.target, event.target.path);
         this.setState({[event.target.name]: event.target.value});
         this.setState({imageName: event.target.value})
     };
@@ -35,14 +34,16 @@ class SearchBar extends React.Component {
             this.setState({errorMessage: 'Please choose an image to continue processing'});
             return false
         }
-
+        return true
     };
     onFormSubmit = event => {
         event.preventDefault();
+        console.log('submitting');
+
         const data = {
-            queryWord: event.target[1].value,
-            minViews: event.target[3].value.replace(this.filterCommas, ''),
-            maxViews: event.target[4].value.replace(this.filterCommas, '')
+            image: this.state.image,
+            localize: this.state.localize,
+            classify: this.state.classify
         };
 
         if (!this.isFormValid(data)) {

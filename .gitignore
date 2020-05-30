@@ -42,3 +42,4 @@ venv/
 *.xlsx
 *.sock
 tests/media/
+**.log

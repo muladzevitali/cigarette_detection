@@ -4,7 +4,7 @@ import SearchBar from './SearchBar'
 import Header from './Header'
 import ResultsTable from './ResultsTable'
 import PageLoader from './PageLoader'
-import {crawlerUrl} from '../Config'
+import {detectionUrl} from '../Config'
 import {Container, Col, Row} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../Styles/App.css';
@@ -14,7 +14,7 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: [null],
+            data: null,
             searchBarData: {
                 classify: true,
                 localize: true,
@@ -26,8 +26,9 @@ class App extends React.Component {
 
     handleFormSubmit = (data) => {
         this.setState({requestLoading: true});
-        const params = {max_views: data.maxViews, min_views: data.minViews, query_word: data.queryWord};
-        axios.get(crawlerUrl,
+        const params = {localize: data.localize, classify: data.classify, image: data.image};
+        console.log(params, detectionUrl);
+        axios.post(detectionUrl,
             {params})
             .then(
                 (response) => {
@@ -40,9 +41,6 @@ class App extends React.Component {
         });
 
 
-    };
-    sleep = (time) => {
-        return new Promise((resolve) => setTimeout(resolve, time));
     };
 
     render() {
