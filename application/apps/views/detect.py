@@ -3,6 +3,7 @@
 import cv2
 import numpy
 import werkzeug
+from flask_cors import cross_origin
 from flask_restful import (Resource, reqparse)
 
 from src.yolo import cigarette_detector
@@ -15,6 +16,7 @@ class Detect(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('image', type=werkzeug.datastructures.FileStorage, location='files', required=True)
 
+    @cross_origin()
     def post(self):
         # Parse arguments
         args = self.parser.parse_args()
