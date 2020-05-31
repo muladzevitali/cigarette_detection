@@ -19,6 +19,7 @@ def detection(image_loader, model, draw=True):
     if yolo_config.cuda:
         torch.cuda.synchronize(device=0)
     # Predictions rescaled to the original image
+    # TODO needs some observations
     scaled_predictions = rescale_prediction(image_loader, predictions)
     # Save image in output folder
     if draw:
