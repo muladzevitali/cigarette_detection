@@ -15,6 +15,7 @@ class App extends React.Component {
         super(props);
         this.state = {
             data: null,
+            errorMessage: null,
             searchBarData: {
                 classify: true,
                 localize: true,
@@ -32,16 +33,26 @@ class App extends React.Component {
         bodyFormData.append('localize', data.localize);
         bodyFormData.append('classify', data.classify);
         // Send form and handle results
+        console.log('sending data', data);
         axios.post(detectionUrl, bodyFormData)
             .then(
                 (response) => {
-                    this.setState({data: response.data.data || [], searchBarData: data, requestLoading: false})
+                    this.setState({
+                        data: response.data.data || [],
+                        searchBarData: data,
+                        requestLoading: false,
+                        errorMessage: null
+                    })
                 }
             )
             .catch(error => {
-                data = {...data, errorMessage: 'Connection problem', validated: false};
-                this.setState({requestLoading: false, searchBarData: data,});
-                console.log(error.response)
+                let errorMessage = 'Connection error';
+                console.log('error', error.response);
+                if (error.response && error.response.data && typeof error.response.data.message === 'string') {
+                    errorMessage = error.response.data.message;
+                }
+                data = {errorMessage: errorMessage, validated: false};
+                this.setState({requestLoading: false, errorMessage: errorMessage});
             });
 
 
@@ -62,7 +73,7 @@ class App extends React.Component {
 
         return (
             <div className='App align-self-center'>
-                {this.state.data ?
+                {!this.state.errorMessage && this.state.data ?
                     (
                         <Container fluid className='dataContainer align-self-center'>
                             <Row style={{alignContent: 'baseline'}}>
@@ -89,7 +100,8 @@ class App extends React.Component {
                             <Header/>
                             <Container>
                                 <SearchBar onSubmit={this.handleFormSubmit}
-                                           state={this.state.searchBarData}/>
+                                           state={this.state.searchBarData}
+                                           errorMessage={this.state.errorMessage}/>
                             </Container>
                         </div>
                     )
