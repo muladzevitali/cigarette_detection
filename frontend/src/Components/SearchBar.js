@@ -6,10 +6,11 @@ import '../Styles/SearchBar.css'
 class SearchBar extends React.Component {
     constructor(props) {
         super(props);
+        console.log('error message', props.errorMessage);
         this.state = {
             showFilters: false,
             validated: null,
-            errorMessage: null,
+            errorMessage: props.errorMessage,
             imageName: null,
             ...props.state
         }
