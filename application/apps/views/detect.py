@@ -38,10 +38,10 @@ class Detect(Resource):
 
     @staticmethod
     def load_image(image: werkzeug.datastructures.FileStorage) -> numpy.array:
-        """Load werkzeug file storage to numpy"""
+        """Load werkzeug file storage to numpy. Returns only RGB layers"""
         image = cv2.imdecode(numpy.frombuffer(image.read(), numpy.uint8), cv2.IMREAD_UNCHANGED)
 
-        return image
+        return image[:, :, :3]
 
     def save_yolo_results(self, coordinates: list, image: numpy.array, args) -> Optional[Dict[str, dict]]:
         """Save yolo coordinates to disk and get paths of the images for showing on front"""

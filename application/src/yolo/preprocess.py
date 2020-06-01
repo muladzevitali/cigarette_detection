@@ -27,9 +27,6 @@ def prepare_image(img, path=True):
     """
     orig_im = cv2.imread(img) if path else img
     dim = orig_im.shape[1], orig_im.shape[0]
-    # If image is png like with more than 3 layers
-    if orig_im.shape[2] > 3:
-        orig_im = orig_im[:, :, :3]
 
     img = (letterbox_image(orig_im, (yolo_config.resolution, yolo_config.resolution)))
     img_ = img[:, :, ::-1].transpose((2, 0, 1)).copy()
