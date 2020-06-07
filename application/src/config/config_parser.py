@@ -66,3 +66,11 @@ class YoloConfiguration:
     resolution = int(config['YOLO']['RESOLUTION'])
     scales = config['YOLO']['SCALES']
     cuda = torch.cuda.is_available()
+
+
+@dataclass(init=False)
+class Resnet:
+    weights_file = config['RESNET']['WEIGHTS']
+    cuda = torch.cuda.is_available()
+    batch_size = int(config['RESNET']['BATCH_SIZE'])
+    top_k = int(config['RESNET']['TOP_K'])

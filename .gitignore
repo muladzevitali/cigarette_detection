@@ -44,3 +44,6 @@ venv/
 tests/media/
 **.log
 application/media/results
+application/media/models/*.pth
+*.pth
+application/media/models/cigarette/cigarette_classifier_101.pth

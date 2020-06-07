@@ -33,7 +33,6 @@ class App extends React.Component {
         bodyFormData.append('localize', data.localize);
         bodyFormData.append('classify', data.classify);
         // Send form and handle results
-        console.log('sending data', data);
         axios.post(detectionUrl, bodyFormData)
             .then(
                 (response) => {
