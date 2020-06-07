@@ -44,3 +44,4 @@ venv/
 tests/media/
 **.log
 application/media/results
+*.pth
