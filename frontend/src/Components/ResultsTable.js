@@ -2,6 +2,7 @@ import React from 'react'
 import {Card, Col, Form, ListGroup, ListGroupItem, Modal, Row} from 'react-bootstrap'
 import '../Styles/ResultsTable.css'
 import {mediaUrl} from '../Config'
+import capitalize from "../Utils/capitalize";
 
 class ResultsTable extends React.Component {
     constructor(props) {
@@ -23,6 +24,13 @@ class ResultsTable extends React.Component {
 
     renderDetections = predictions => {
         return predictions.map((item, index) => {
+            let class_ = capitalize(item['predictions'][0]['class']);
+            let probability = item['predictions'][0]['probability'].toFixed(2);
+
+            if (probability < 0.6) {
+                class_ = 'Unknown';
+                probability = 0
+            }
             return (
                 <Card className='resultsSmallCard' key={index}>
                     <Card.Img variant="top" src={`${mediaUrl}/${item.image_path}`}
@@ -42,7 +50,7 @@ class ResultsTable extends React.Component {
                                                           name='companyName'
                                                           type="text"
                                                           autoFocus
-                                                          defaultValue='Malboro'
+                                                          defaultValue={class_}
                                             />
                                         </div>
                                     </Form>
@@ -52,10 +60,10 @@ class ResultsTable extends React.Component {
                         <ListGroupItem className='resultsListItem'>
                             <Row>
                                 <Col className='nameTarget'>
-                                    Precision:
+                                    Probability:
                                 </Col>
                                 <Col>
-                                    {item.precision}
+                                    {probability}
                                 </Col>
                             </Row>
                         </ListGroupItem>

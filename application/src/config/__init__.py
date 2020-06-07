@@ -1,5 +1,5 @@
 from .config_parser import (Application, FaissConfiguration, Media,
-                            ApplicationDatabase, YoloConfiguration)
+                            ApplicationDatabase, YoloConfiguration, Resnet)
 
 # Define configuration for further usage
 app_config = Application
@@ -9,3 +9,5 @@ media_config = Media()
 yolo_config = YoloConfiguration
 # Prefix for all tables in the app context
 table_prefix = database_config.table_prefix
+# Config for resnet
+resnet_config = Resnet

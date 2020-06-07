@@ -1,10 +1,11 @@
 import os
 from secrets import token_hex
+
 import cv2
 
 from src.yolo import cigarette_detector
 
-images_folder_path = '/home/muladzevitali/media/cigarettes/images'
+images_folder_path = '/home/muladzevitali/media/cigarettes/rotated_data'
 output_folder_path = '/home/muladzevitali/media/cigarettes/cropped_packs'
 
 for image_name in os.listdir(images_folder_path):
@@ -16,5 +17,7 @@ for image_name in os.listdir(images_folder_path):
         y_start_coordinate = coordinate[1][1] - int((coordinate[1][1] - coordinate[0][1]) * 0.5)
         cropped_image = image[coordinate[0][1]:y_start_coordinate, coordinate[0][0]: coordinate[1][0]]
         cropped_image_path = os.path.join(output_folder_path, f'{token_hex(9)}.jpg')
-
-        cv2.imwrite(cropped_image_path, cropped_image)
+        try:
+            cv2.imwrite(cropped_image_path, cropped_image)
+        except cv2.error:
+            continue
