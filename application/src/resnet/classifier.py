@@ -4,7 +4,7 @@ import numpy
 import torch
 
 from src.config import resnet_config
-from .resnet import resnet18, resnet101
+from .resnet import resnet101
 from .transforms import transform_images
 
 batch_size = resnet_config.batch_size
@@ -20,6 +20,7 @@ class Resnet:
     def load_model():
         """Load classifier model"""
         cigarette_classifier = resnet101(pretrained=True)
+
         cigarette_classifier.load_state_dict(torch.load(resnet_config.weights_file, map_location=torch.device('cpu')))
 
         if resnet_config.cuda:
