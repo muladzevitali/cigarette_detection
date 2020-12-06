@@ -3,15 +3,15 @@ from secrets import token_hex
 
 import cv2
 
-from src.yolo import cigarette_detector
+from src.yolo import detector
 
-images_folder_path = '/home/muladzevitali/media/cigarettes/rotated_data'
-output_folder_path = '/home/muladzevitali/media/cigarettes/cropped_packs'
+images_folder_path = '/home/muladzevitali/media/shop_products_bottle_2/images'
+output_folder_path = '/home/muladzevitali/media/shop_products_bottle_2/outputs'
 
 for image_name in os.listdir(images_folder_path):
     image_path = os.path.join(images_folder_path, image_name)
     image = cv2.imread(image_path)
-    coordinates = cigarette_detector.detect(image_path)
+    coordinates = detector.detect(image_path)
     for index_, coordinate in enumerate(coordinates):
         # Take image from half and above
         y_start_coordinate = coordinate[1][1] - int((coordinate[1][1] - coordinate[0][1]) * 0.5)

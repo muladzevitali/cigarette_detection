@@ -1,3 +1,3 @@
 from .yolo import YoloDetector
 
-cigarette_detector = YoloDetector()
+detector = YoloDetector()

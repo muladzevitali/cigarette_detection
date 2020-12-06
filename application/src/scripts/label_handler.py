@@ -3,7 +3,7 @@ import os
 from secrets import token_hex
 from shutil import copyfile
 from typing import (List, Tuple, Optional)
-
+from pathlib import Path
 import cv2
 
 
@@ -19,17 +19,15 @@ def form_rectangle(points: List[List]) -> Optional[Tuple[Tuple[int, int], Tuple[
     return (x1, y1), (x2, y2)
 
 
-def parse_data_folder(images_dir_path: str, labels_dir_path: str) -> List[tuple]:
+def parse_data_folder(images_dir_path: Path, labels_dir_path: Path) -> List[tuple]:
     """Parses directory and returns image, json tuples list"""
 
     parsed_files: List[tuple] = list()
-    for file in os.listdir(images_dir_path):
-        image_file = os.path.join(images_dir_path, file)
-        file_name = f'{os.path.splitext(file)[0]}.json'
-        json_file = os.path.join(labels_dir_path, file_name)
+    for json_file in labels_dir_path.iterdir():
+        image_file = images_dir_path.joinpath(f'{json_file.stem}.jpg')
 
-        parsed_files.append((image_file, json_file))
-
+        parsed_files.append((str(image_file), str(json_file)))
+    print(len(parsed_files))
     return parsed_files
 
 
@@ -93,12 +91,12 @@ def create_yolo_label_file(file_: tuple, current_class_id: str, yolo_dataset_dir
 
 
 if __name__ == '__main__':
-    media_dir: str = '/home/muladzevitali/media/cigarettes'
+    media_dir: Path = Path('/home/muladzevitali/media/shop_products_bottle_2')
     # Folder paths for images and labels
-    images_folder = os.path.join(media_dir, 'images')
-    labels_folder = os.path.join(media_dir, 'labels')
-    yolo_dataset_folder = os.path.join(media_dir, 'yolo_dataset')
+    images_folder = media_dir.joinpath('images')
+    labels_folder = media_dir.joinpath('labels')
+    yolo_dataset_folder = media_dir.joinpath('yolo_dataset')
 
     files: List[tuple] = parse_data_folder(images_folder, labels_folder)
     for file in files:
-        create_yolo_label_file(file, 0, yolo_dataset_folder)
+        create_yolo_label_file(file, '0', str(yolo_dataset_folder))
